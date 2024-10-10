@@ -1,10 +1,15 @@
 ﻿@model Movie
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <title></title>
-    <link href="/css/style.css" rel="stylesheet" />
-</head>
-<body>
+
+@section header{ 
+    @await Html.PartialAsync("_header")
+ } 
+
+ @section scripts{
+    <script src="/js/script.js"></script>
+ }
+
+Home/Index
+
     <h1>Film Listesi</h1>
     <div id="filmler">
         <div class="film">
@@ -21,5 +26,3 @@
             </p>
         </div>
     </div>
-</body>
-</html>
