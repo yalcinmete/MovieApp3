@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace MovieApp3.Web
@@ -16,6 +17,10 @@ namespace MovieApp3.Web
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            //services.AddControllers(); //API icin.
+            //services.AddRazorPages(); //Razor sayfalar için.
+
+            services.AddControllersWithViews(); //MVC kullanýmý icin.
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -26,15 +31,82 @@ namespace MovieApp3.Web
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseStaticFiles(); //wwwroot'u dýþarýya açar.
+
             app.UseRouting();
 
+            //app.UseEndpoints(endpoints =>
+            //{
+            //    endpoints.MapGet("/", async context =>
+            //    {
+            //        await context.Response.WriteAsync("Hello World!");
+            //    });
+            //});
+
+            
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                //default route.
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+
             });
+
+
+            //    //localhost:5000/
+            //    endpoints.MapControllerRoute(
+            //        name: "home",
+            //        pattern: "",
+            //        defaults: new { controller = "Home", action = "index" }
+            //    );
+
+            //    //localhost:5000/about
+            //    endpoints.MapControllerRoute(
+            //        name: "about",
+            //        pattern: "hakkýmýzda",
+            //        defaults: new { controller = "Home", action = "about" }
+            //    );
+
+
+            //    endpoints.MapControllerRoute(
+            //        name: "movieList",
+            //        pattern: "movies/list",
+            //        defaults: new { controller = "Movies", action = "List" }
+            //    );
+
+            //    endpoints.MapControllerRoute(
+            //        name: "movieDetails",
+            //        pattern: "movies/details",
+            //        defaults: new { controller = "Movies", action = "Details" }
+            //    );
+
+            //localhost:5000/movies
+            //endpoints.MapControllerRoute(
+            //    name: "movieList",
+            //    pattern: "movies",
+            //    defaults: new { controller = "Movies", action = "List" }
+            //    );
+
+
+
+            ////localhost:5000
+            //app.UseEndpoints(endpoints =>
+            //{
+            //    endpoints.MapGet("/", async context =>
+            //    {
+            //        await context.Response.WriteAsync("Hello World!");
+            //    });
+            //});
+
+            ////localhost:5000/movies
+            /// //app.UseEndpoints(endpoints =>
+            //{
+            //    endpoints.MapGet("/movies", async context =>
+            //    {
+            //        await context.Response.WriteAsync("Movie List");
+            //    });
+            //});
         }
     }
 }
