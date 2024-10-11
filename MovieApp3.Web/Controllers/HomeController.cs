@@ -39,6 +39,7 @@ namespace MovieApp3.Web.Controllers
         }
         public IActionResult About()
         {
+            //ViewComponent ile gönderdik.
             //var turListesi = new List<Genre>()
             //{
             //   new Genre {Name="Macera"},

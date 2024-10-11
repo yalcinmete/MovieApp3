@@ -47,18 +47,18 @@ namespace MovieApp3.Web.Controllers
                     ImageUrl  = "4.jpg"},
             };
 
-            var turListesi = new List<Genre>()
-            {
-                new Genre {Name = "Macera"},
-                new Genre {Name = "Komedi"},
-                new Genre {Name = "Romantik"},
-                new Genre {Name = "Savaş"},
-            };
+            //var turListesi = new List<Genre>()
+            //{
+            //    new Genre {Name = "Macera"},
+            //    new Genre {Name = "Komedi"},
+            //    new Genre {Name = "Romantik"},
+            //    new Genre {Name = "Savaş"},
+            //};
 
             var model = new MovieGenreViewModel()
             {
                 Movies = filmListesi,
-                Genres = turListesi,
+                //Genres = turListesi,
             };
 
             //return View("Movies", filmListesi);
