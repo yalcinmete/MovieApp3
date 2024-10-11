@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MovieApp3.Web.Data;
 using MovieApp3.Web.Models;
 using System.Collections.Generic;
 
@@ -63,6 +64,12 @@ namespace MovieApp3.Web.Controllers
 
             //return View("Movies", filmListesi);
             return View("Movies", model);
+        }
+
+        //localhost:17285/movies/details/1
+        public IActionResult Details(int id)
+        {
+            return View(MovieRepository.GetById(id));
         }
     }
 }
