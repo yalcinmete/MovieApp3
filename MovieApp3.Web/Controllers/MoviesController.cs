@@ -16,7 +16,7 @@ namespace MovieApp3.Web.Controllers
 
         //localhost:17285/movies/details/
         //localhost:17285/movies/details/1
-        public IActionResult List(int? id)
+        public IActionResult List(int? id,string q )
         {
             #region AciklamaSatiri
             //var filmListesi = new List<Movie>()
@@ -52,6 +52,7 @@ namespace MovieApp3.Web.Controllers
             #endregion
 
             #region QueryBilgisiAlmak
+            //var kelime = q //(parametreden)
             //var kelime = HttpContext.Request.Query["q"].ToString();
             #endregion
 
@@ -62,6 +63,13 @@ namespace MovieApp3.Web.Controllers
             {
                 movies = movies.Where(m => m.GenreId == id).ToList();
             }
+
+            if (!string.IsNullOrEmpty(q))
+            {
+                movies = movies.Where(i => i.Title.ToLower().Contains(q.ToLower()) ||
+                i.Description.ToLower().Contains(q.ToLower())).ToList();
+            }
+
 
             //var turListesi = new List<Genre>()
             //{
