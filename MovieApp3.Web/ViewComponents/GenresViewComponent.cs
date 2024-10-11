@@ -18,6 +18,8 @@ namespace MovieApp3.Web.ViewComponents
             //};
 
             //return View(turListesi);
+
+            ViewBag.SelectedGenre = RouteData.Values["id"];
             return View(GenreRepository.Genres);
         }
     }
