@@ -4,4 +4,12 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\img\2.jpg" />
+    <None Include="wwwroot\img\3.jpg" />
+    <None Include="wwwroot\img\4.jpg" />
+    <None Include="wwwroot\img\5.jpg" />
+    <None Include="wwwroot\img\6.jpg" />
+  </ItemGroup>
+
 </Project>

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MovieApp3.Web.Data;
 using MovieApp3.Web.Models;
 using System.Collections.Generic;
 
@@ -17,20 +18,26 @@ namespace MovieApp3.Web.Controllers
 
         public IActionResult Index()
         {
-            string filmBasligi = "film basliği";
-            string filmAciklama = "filmin açıklaması";
-            string filmYonetmen = "filmin yönetmen adi";
-            string[] oyuncular = { "oyuncu1", "oyuncu2", "oyuncu3", "oyuncu4" };
+            //string filmBasligi = "film basliği";
+            //string filmAciklama = "filmin açıklaması";
+            //string filmYonetmen = "filmin yönetmen adi";
+            //string[] oyuncular = { "oyuncu1", "oyuncu2", "oyuncu3", "oyuncu4" };
 
-            var m = new Movie();
-            m.Title = filmBasligi;
-            m.Description = filmAciklama;
-            m.Director = filmYonetmen;
-            m.Players = oyuncular;
-            m.ImageUrl = "1.jpg";
+            //var m = new Movie();
+            //m.Title = filmBasligi;
+            //m.Description = filmAciklama;
+            //m.Director = filmYonetmen;
+            //m.Players = oyuncular;
+            //m.ImageUrl = "1.jpg";
 
 
-            return View(m);
+            var model = new HomePageViewModel
+            {
+                PopularMovies = MovieRepository.Movies
+            };
+
+
+            return View(model);
 
             //ViewBag.FilmBasligi = filmBasligi;
             //ViewBag.FilmAciklamasi = filmAciklama;
