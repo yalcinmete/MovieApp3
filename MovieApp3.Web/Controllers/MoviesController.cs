@@ -2,6 +2,7 @@
 using MovieApp3.Web.Data;
 using MovieApp3.Web.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MovieApp3.Web.Controllers
 {
@@ -12,41 +13,17 @@ namespace MovieApp3.Web.Controllers
             return View();
         }
 
-        public IActionResult List()
+
+        //localhost:17285/movies/details/
+        //localhost:17285/movies/details/1
+        public IActionResult List(int? id)
         {
-            var filmListesi = new List<Movie>()
+            var movies = MovieRepository.Movies;
+
+            if (id!= null)
             {
-                new Movie
-                {
-                    Title="film 1",
-                    Description="açıklama 1",
-                    Director = "Yönetmen 1",
-                    Players  = new string[] {"oyuncu 1","oyuncu 2" , "oyuncu 3","oyuncu 4"},
-                    ImageUrl  = "1.jpg"
-                },
-                    
-                new Movie
-                {
-                    Title="film 2",
-                    Description="açıklama 2",
-                    Director = "Yönetmen 2",
-                    Players  = new string[] {"oyuncu 1","oyuncu 2" , "oyuncu 3","oyuncu 4"} ,
-                    ImageUrl  = "2.jpg"},
-                new Movie
-                {
-                    Title="film 3",
-                    Description="açıklama 3",
-                    Director = "Yönetmen 3",
-                    Players  = new string[] {"oyuncu 1","oyuncu 2" , "oyuncu 3","oyuncu 4"} , 
-                    ImageUrl = "3.jpg"},
-                new Movie
-                {
-                    Title="film 4",
-                    Description="açıklama 4",
-                    Director = "Yönetmen 4",
-                    Players  = new string[] {"oyuncu 1","oyuncu 2" , "oyuncu 3","oyuncu 4"},
-                    ImageUrl  = "4.jpg"},
-            };
+                movies = movies.Where(m => m.GenreId == id).ToList();
+            }
 
             //var turListesi = new List<Genre>()
             //{
@@ -58,8 +35,11 @@ namespace MovieApp3.Web.Controllers
 
             var model = new MovieGenreViewModel()
             {
-                Movies = filmListesi,
+                //Movies = filmListesi,
                 //Genres = turListesi,
+                //Movies = MovieRepository.Movies
+
+                Movies = movies
             };
 
             //return View("Movies", filmListesi);

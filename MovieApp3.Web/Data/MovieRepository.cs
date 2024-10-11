@@ -19,6 +19,7 @@ namespace MovieApp3.Web.Data
                     Director = "Kıvanç Baruönü",
                     Players = new string[] { "Ezgi Mola", "Murat Yıldırım", "Nevra Serezli" },
                      ImageUrl = "1.jpg",
+                     GenreId    =  1
 
                 },
                 new Movie{
@@ -28,6 +29,7 @@ namespace MovieApp3.Web.Data
                     Director = "Burak Çelik",
                     Players = new string[] { "Merve Özel", "Onur Aziz Özdemir", "Levent Çakır" },
                     ImageUrl = "2.jpg",
+                     GenreId    =  1
                 },
                 new Movie{
                     MovieId = 3,
@@ -36,6 +38,7 @@ namespace MovieApp3.Web.Data
                     Director = "Aykut Taşkın",
                     Players = new string[] {"Hakan Bilgin", "Yosi Mizrahi", "Veysel Demir" },
                     ImageUrl = "3.jpg",
+                    GenreId    =  3
                 },
                  new Movie{
                     MovieId = 4,
@@ -44,6 +47,7 @@ namespace MovieApp3.Web.Data
                     Director = "James Cameron",
                     Players = new string[] { "Sam Worthington", "Zoë Saldaña" },
                      ImageUrl = "4.jpg",
+                     GenreId    =  4
 
                 },
                 new Movie{
@@ -53,6 +57,7 @@ namespace MovieApp3.Web.Data
                     Director = "John Barr",
                     Players = new string[] { "Eric Dane", "Odeya Rush", "Saffron Burrows" },
                     ImageUrl = "5.jpg",
+                    GenreId    =  3
                 },
                 new Movie{
                     MovieId = 6,
@@ -61,6 +66,7 @@ namespace MovieApp3.Web.Data
                     Director = "Mark Osborne",
                     Players = new string[] { "Jeff Bridges", "Rachel McAdams", "Paul Rudd" },
                     ImageUrl = "6.jpg",
+                    GenreId    =  4
                 },
 
             };
