@@ -8,7 +8,10 @@
             <div class="card-body">
                 <h5 class="card-title">@Model.Title</h5>
                 <p>
-                    <a class="btn btn-primary" href="/movies/details/@Model.MovieId" >Details</a>
+                        @* <a class="btn btn-primary" href="/movies/details/@Model.MovieId">details</a> *@
+                        <a class="btn btn-primary" asp-controller="movies" asp-action="details" asp-route-id="@Model.MovieId">Details</a>
+                        @* <a class="btn btn-primary" href="/movies/edit/@Model.MovieId">duzenle</a> *@
+                        <a class="btn btn-warning" asp-controller="movies" asp-action="edit" asp-route-id="@Model.MovieId">Edit</a>
                 </p>
             </div>
         </div>

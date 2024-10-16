@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using MovieApp3.Web.Data;
 using MovieApp3.Web.Models;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ namespace MovieApp3.Web.Controllers
 {
     public class MoviesController : Controller
     {
+        [HttpGet]
         public IActionResult Index()
         {
             return View();
@@ -16,6 +18,7 @@ namespace MovieApp3.Web.Controllers
 
         //localhost:17285/movies/details/
         //localhost:17285/movies/details/1
+        [HttpGet]
         public IActionResult List(int? id,string q )
         {
             #region AciklamaSatiri
@@ -93,9 +96,62 @@ namespace MovieApp3.Web.Controllers
         }
 
         //localhost:17285/movies/details/1
+        [HttpGet]
         public IActionResult Details(int id)
         {
             return View(MovieRepository.GetById(id));
+        }
+
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            ViewBag.Genres = new SelectList(GenreRepository.Genres, "GenreId", "Name");
+            return View();
+        }
+
+        [HttpPost]
+        //public IActionResult Create(string Title, string Description, string Director, string ImageUrl, int GenreId)
+        public IActionResult Create(Movie m)
+        {
+            //var m = new Movie()
+            //{
+            //    Title = Title,
+            //    Description = Description,
+            //    Director = Director,
+            //    ImageUrl = ImageUrl,
+            //    GenreId = GenreId
+            //};
+            if (ModelState.IsValid)
+            {
+                MovieRepository.Add(m);
+                return RedirectToAction("List");
+                //return RedirectToAction("Index,Home"); //Overload'ında Action controller da verebiliyorsun.
+            }
+            ViewBag.Genres = new SelectList(GenreRepository.Genres, "GenreId", "Name");
+            return View();
+        }
+
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            ViewBag.Genres = new SelectList(GenreRepository.Genres, "GenreId", "Name");
+            return View(MovieRepository.GetById(id));
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Movie m)
+        {
+            if (ModelState.IsValid)
+            {
+                MovieRepository.Edit(m);
+                //../movies/details/1
+                return RedirectToAction("Details", "Movies", new { @id = m.MovieId }); //burada new ile Anonymous type kullanılmış oldu.(Sınıfı belli olmayan tek seferlik kullanılacak sınıflar) 
+            }
+            ViewBag.Genres = new SelectList(GenreRepository.Genres, "GenreId", "Name");
+            return View(m);
+
         }
     }
 }
