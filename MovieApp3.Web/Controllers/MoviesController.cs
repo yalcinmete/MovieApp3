@@ -125,6 +125,7 @@ namespace MovieApp3.Web.Controllers
             if (ModelState.IsValid)
             {
                 MovieRepository.Add(m);
+                TempData["Message"] = $"{m.Title} isimli film eklendi.";
                 return RedirectToAction("List");
                 //return RedirectToAction("Index,Home"); //Overload'ında Action controller da verebiliyorsun.
             }
@@ -151,6 +152,16 @@ namespace MovieApp3.Web.Controllers
             }
             ViewBag.Genres = new SelectList(GenreRepository.Genres, "GenreId", "Name");
             return View(m);
+
+        }
+
+        [HttpPost]
+        public IActionResult Delete(int MovieId,string Title)
+        {
+            MovieRepository.Delete(MovieId);
+            //ViewBag.Message = $"{Title} isimli film silindi"; //Actiona yönlendirme işlemi olduğu için ViewBag çalışmaz
+            TempData["Message"] = $"{Title} isimli film silindi";
+            return RedirectToAction("List");
 
         }
     }
