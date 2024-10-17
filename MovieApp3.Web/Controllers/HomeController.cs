@@ -2,6 +2,7 @@
 using MovieApp3.Web.Data;
 using MovieApp3.Web.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MovieApp3.Web.Controllers
 {
@@ -15,6 +16,14 @@ namespace MovieApp3.Web.Controllers
         //{
         //    return "Hakkımızda";
         //}
+
+        private readonly MovieContext _context;
+
+        public HomeController(MovieContext context)
+        {
+            _context = context;
+
+        }
 
         public IActionResult Index()
         {
@@ -33,7 +42,8 @@ namespace MovieApp3.Web.Controllers
 
             var model = new HomePageViewModel
             {
-                PopularMovies = MovieRepository.Movies
+                //PopularMovies = MovieRepository.Movies
+                PopularMovies = _context.Movies.ToList()
             };
 
 
