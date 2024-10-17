@@ -41,6 +41,7 @@ namespace MovieApp3.Web
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                DataSeeding.Seed(app);
             }
 
             app.UseStaticFiles(); //wwwroot'u dýþarýya açar.
