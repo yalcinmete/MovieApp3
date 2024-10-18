@@ -10,7 +10,7 @@ namespace MovieApp3.Web.Entity
         public string Title { get; set; } //null
         [MaxLength(500)]
         public string Description { get; set; }
-        public string Director { get; set; }
+        //public string Director { get; set; }
         //public string[] Players { get; set; }
         public string ImageUrl { get; set; } //string değer boş değer için null alır
         [Required]

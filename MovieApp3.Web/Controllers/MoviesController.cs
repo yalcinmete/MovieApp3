@@ -180,7 +180,7 @@ namespace MovieApp3.Web.Controllers
         [HttpPost]
         public IActionResult Delete(int MovieId,string Title)
         {
-            MovieRepository.Delete(MovieId);
+            //MovieRepository.Delete(MovieId);
             var entity = _context.Movies.Find(MovieId);
             _context.Movies.Remove(entity);
             _context.SaveChanges();

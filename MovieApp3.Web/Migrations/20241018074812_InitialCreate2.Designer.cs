@@ -9,14 +9,34 @@ using MovieApp3.Web.Data;
 namespace MovieApp3.Web.Migrations
 {
     [DbContext(typeof(MovieContext))]
-    [Migration("20241016144453_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20241018074812_InitialCreate2")]
+    partial class InitialCreate2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.1");
+
+            modelBuilder.Entity("MovieApp3.Web.Entity.Director", b =>
+                {
+                    b.Property<int>("DirectorId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Biography")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("DirectorId");
+
+                    b.ToTable("Directors");
+                });
 
             modelBuilder.Entity("MovieApp3.Web.Entity.Genre", b =>
                 {
@@ -41,9 +61,6 @@ namespace MovieApp3.Web.Migrations
 
                     b.Property<string>("Description")
                         .HasMaxLength(500)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Director")
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("GenreId")
