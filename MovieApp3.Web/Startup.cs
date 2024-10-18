@@ -29,8 +29,8 @@ namespace MovieApp3.Web
             //services.AddRazorPages(); //Razor sayfalar için.,
 
             services.AddDbContext<MovieContext>(options =>
-            //options.UseSqlServer(Configuration.GetConnectionString("MsSQLConnection")));
-            options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            options.UseSqlServer(Configuration.GetConnectionString("MsSQLConnection")));
+            //options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddControllersWithViews(); //MVC kullanýmý icin.
         }

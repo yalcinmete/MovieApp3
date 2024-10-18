@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MovieApp3.Web.Entity
 {
     public class Movie
     {
+        //[Key,DatabaseGenerated(DatabaseGeneratedOption.None)] //SQL tarafından oluşturulan Otomatik id'yi kapatır.Bu durumda manuel olarak id vermek gerekir.
         public int MovieId { get; set; }
         [Required]
         public string Title { get; set; } //null
