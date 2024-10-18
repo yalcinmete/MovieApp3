@@ -15,6 +15,7 @@ namespace MovieApp3.Web.Entity
         //public string Director { get; set; }
         //public string[] Players { get; set; }
         public string ImageUrl { get; set; } //string değer boş değer için null alır
+        public Genre Genre { get; set; } //Navigation Property
         [Required]
         public int? GenreId { get; set; } //int boş değer için 0 alır.Required demiş olsak bile boş iken 0 değeri atandığı için Required işlevsiz olur. Bu nedenle int? diyip boş ise null atansın diyoruz.
     }

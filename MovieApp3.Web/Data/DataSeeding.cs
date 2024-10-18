@@ -17,12 +17,30 @@ namespace MovieApp3.Web.Data
 
             context.Database.Migrate(); //update-database  veritabanı oluşturuldu
 
-            if (context.Database.GetPendingMigrations().Count() == 0)
-            {
-                if (context.Movies.Count() == 0 )
-                {
-                    context.Movies.AddRange(
-                        new List<Movie>()
+            var genres = new List<Genre>()
+                        {
+                            new Genre {Name = "Macera" , Movies= new List<Movie>() 
+                            { 
+                                new Movie{
+                                Title = "yeni macera filmi 1",
+                                Description = "yeni macera filmi 1 açıklama ",
+                                 ImageUrl = "1.jpg",
+                                 //GenreId    =  genres[0].GenreId
+
+                                },
+                                new Movie{
+                                    Title = "yeni macera filmi 2",
+                                    Description = "yeni macera filmi 2 açıklama",
+                                    ImageUrl = "2.jpg",
+                                }, 
+                            }},
+                            new Genre {Name = "Komedi"},
+                            new Genre {Name = "Romantik"},
+                            new Genre {Name = "Savaş"},
+                            new Genre {Name = "Bilim Kurgu"}
+                        };
+
+            var movies = new List<Movie>()
                         {
                             new Movie{
                                 Title = "Kocan Kadar Konuş",
@@ -30,7 +48,8 @@ namespace MovieApp3.Web.Data
                                 //Director = "Kıvanç Baruönü",
                                 //Players = new string[] { "Ezgi Mola", "Murat Yıldırım", "Nevra Serezli" },
                                  ImageUrl = "1.jpg",
-                                 GenreId    =  1
+                                 //GenreId    =  genres[0].GenreId
+                                 Genre    =  genres[0]
 
                             },
                             new Movie{
@@ -39,7 +58,7 @@ namespace MovieApp3.Web.Data
                                 //Director = "Burak Çelik",
                                 //Players = new string[] { "Merve Özel", "Onur Aziz Özdemir", "Levent Çakır" },
                                 ImageUrl = "2.jpg",
-                                 GenreId    =  2
+                                 Genre    =  genres[1]
                             },
                             new Movie{
                                 Title = "Geri Sayım",
@@ -47,7 +66,7 @@ namespace MovieApp3.Web.Data
                                 //Director = "Aykut Taşkın",
                                 //Players = new string[] {"Hakan Bilgin", "Yosi Mizrahi", "Veysel Demir" },
                                 ImageUrl = "3.jpg",
-                                GenreId    =  3
+                               Genre    =  genres[1]
                             },
                              new Movie{
                                 Title = "Avatar",
@@ -55,7 +74,7 @@ namespace MovieApp3.Web.Data
                                 //Director = "James Cameron",
                                 //Players = new string[] { "Sam Worthington", "Zoë Saldaña" },
                                  ImageUrl = "4.jpg",
-                                 GenreId    =  4
+                                 Genre    =  genres[2]
 
                             },
                             new Movie{
@@ -64,7 +83,7 @@ namespace MovieApp3.Web.Data
                                 //Director = "John Barr",
                                 //Players = new string[] { "Eric Dane", "Odeya Rush", "Saffron Burrows" },
                                 ImageUrl = "5.jpg",
-                                GenreId    =  3
+                                Genre    =  genres[2]
                             },
                             new Movie{
                                 Title = "Küçük Prens",
@@ -72,22 +91,22 @@ namespace MovieApp3.Web.Data
                                 //Director = "Mark Osborne",
                                 //Players = new string[] { "Jeff Bridges", "Rachel McAdams", "Paul Rudd" },
                                 ImageUrl = "6.jpg",
-                                GenreId    =  4
+                                Genre    =  genres[3]
                             }
-                        });
-                }
-                if (context.Genres.Count()==0)
+                        };
+
+
+            if (context.Database.GetPendingMigrations().Count() == 0)
+            {
+                if (context.Genres.Count() == 0)
                 {
-                    context.Genres.AddRange(
-                        new List<Genre>()
-                        {
-                            new Genre {Name = "Macera"},
-                            new Genre {Name = "Komedi"},
-                            new Genre {Name = "Romantik"},
-                            new Genre {Name = "Savaş"},
-                            new Genre {Name = "Bilim Kurgu"}
-                        });
+                    context.Genres.AddRange(genres);
                 }
+                if (context.Movies.Count() == 0 )
+                {
+                    context.Movies.AddRange(movies);
+                }
+               
                 context.SaveChanges();
             }
         }
