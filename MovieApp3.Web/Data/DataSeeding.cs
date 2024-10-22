@@ -96,6 +96,18 @@ namespace MovieApp3.Web.Data
                         };
 
 
+            var users = new List<User>()
+            {
+                new User(){Username="usera",Email="usera@gmail.com",Password="1234",ImageUrl="person1.jpg"},
+                new User(){Username="userb",Email="userb@gmail.com",Password="1234",ImageUrl="person2.jpg"},
+                new User(){Username="userc",Email="userc@gmail.com",Password="1234",ImageUrl="person3.jpg",
+                           Person = new Person(){ Name="Personel 1", Biography="tanıtım 1"}, },
+
+                new User(){Username="userd",Email="userd@gmail.com",Password="1234",ImageUrl="person4.jpg",
+                           Person = new Person() { Name = "Personel 2" , Biography = "tanıtım 2"} }
+            };
+
+
             if (context.Database.GetPendingMigrations().Count() == 0)
             {
                 if (context.Genres.Count() == 0)
@@ -106,7 +118,12 @@ namespace MovieApp3.Web.Data
                 {
                     context.Movies.AddRange(movies);
                 }
-               
+
+                if (context.Users.Count() == 0)
+                {
+                    context.Users.AddRange(users);
+                }
+
                 context.SaveChanges();
             }
         }
