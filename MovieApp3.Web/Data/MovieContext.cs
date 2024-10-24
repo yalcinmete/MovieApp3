@@ -37,5 +37,13 @@ namespace MovieApp3.Web.Data
         //    modelBuilder.Entity<Genre>().Property(b => b.Name).IsRequired();
         //    modelBuilder.Entity<Genre>().Property(b => b.Name).HasMaxLength(50);
         //}
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Movie>().Property(b => b.Title).IsRequired();
+            modelBuilder.Entity<Movie>().Property(b => b.Title).HasMaxLength(500);
+            modelBuilder.Entity<Genre>().Property(b => b.Name).IsRequired();
+            modelBuilder.Entity<Genre>().Property(b => b.Name).HasMaxLength(50);
+        }
     }
 }

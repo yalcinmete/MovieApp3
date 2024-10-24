@@ -9,9 +9,7 @@ namespace MovieApp3.Web.Entity
     {
         //[Key,DatabaseGenerated(DatabaseGeneratedOption.None)] //SQL tarafından oluşturulan Otomatik id'yi kapatır.Bu durumda manuel olarak id vermek gerekir.
         public int MovieId { get; set; }
-        [Required]
         public string Title { get; set; } //null
-        [MaxLength(500)]
         public string Description { get; set; }
         //public string Director { get; set; }
         //public string[] Players { get; set; }
