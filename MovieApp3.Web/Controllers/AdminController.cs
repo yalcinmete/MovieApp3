@@ -43,5 +43,49 @@ namespace MovieApp3.Web.Controllers
                     .ToList()
             });
         }
+        [HttpGet]
+        public IActionResult MovieUpdate(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var entity = _context.Movies.Select(m => new AdminEditMovieViewModel
+            {
+                MovieId = m.MovieId,
+                Title = m.Title,
+                Description = m.Description,
+                ImageUrl = m.ImageUrl,
+            }).FirstOrDefault(m => m.MovieId == id);
+
+            ViewBag.Genres = _context.Genres.ToList();
+
+            if (entity == null)
+            {
+                return NotFound();
+            }
+            return View(entity);
+        }
+
+        [HttpPost]
+
+        public IActionResult MovieUpdate(AdminEditMovieViewModel model)
+        {
+            var entity = _context.Movies.Find(model.MovieId);
+
+            if (entity == null) 
+            {
+                return NotFound();  
+            }
+
+            entity.Title = model.Title;
+            entity.Description = model.Description;
+            entity.ImageUrl = model.ImageUrl;
+
+            _context.SaveChanges();
+
+            return RedirectToAction("MovieList");
+        }
     }
 }
