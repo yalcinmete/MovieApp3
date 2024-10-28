@@ -55,3 +55,11 @@
         </div>
     </div>
 </form>
+
+@section scripts
+{
+    <script src="https://cdn.ckeditor.com/4.22.1/basic/ckeditor.js"></script> @*//daha fazla toolbar aracı eklemek icin basic=>standart yap.*@
+    <script>
+        CKEDITOR.replace('Description');
+    </script>
+}
