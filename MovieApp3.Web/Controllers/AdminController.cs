@@ -169,5 +169,31 @@ namespace MovieApp3.Web.Controllers
                 return RedirectToAction("GenreList");
 
         }
+
+        [HttpPost]
+        public ActionResult GenreDelete(int genreId)
+        {
+            var entity = _context.Genres.Find(genreId);
+            if (entity != null)
+            {
+                _context.Genres.Remove(entity);
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("GenreList");
+        }
+
+        [HttpPost]
+        public ActionResult MovieDelete(int movieId)
+        {
+            var entity = _context.Movies.Find(movieId);
+            if (entity != null)
+            {
+                _context.Movies.Remove(entity);
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("MovieList");
+        }
     }
 }
