@@ -195,5 +195,30 @@ namespace MovieApp3.Web.Controllers
 
             return RedirectToAction("MovieList");
         }
+
+        public IActionResult MovieCreate()
+        {
+            ViewBag.Genres = _context.Genres.ToList();
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult MovieCreate(Movie m , int[] genreIds)
+        {
+            if (ModelState.IsValid)
+            {
+                m.Genres = new List<Genre>(); //Genres bilgisi tanımlı ama null gösteriyordu.Null göstermesin.
+                foreach (var  id in genreIds)
+                {
+                    m.Genres.Add(_context.Genres.FirstOrDefault(i => i.GenreId == id));
+                }
+                _context.Movies.Add(m);
+                _context.SaveChanges();
+
+                return RedirectToAction("MovieList", "Admin");
+            }
+            ViewBag.Genres = _context.Genres.ToList();
+            return View();  
+        }
     }
 }
