@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MovieApp3.Web.Data;
 using MovieApp3.Web.Entity;
 using MovieApp3.Web.Models;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace MovieApp3.Web.Controllers
 {
@@ -72,7 +76,7 @@ namespace MovieApp3.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult MovieUpdate(AdminEditMovieViewModel model , int[] genreIds)
+        public async Task<IActionResult> MovieUpdate(AdminEditMovieViewModel model , int[] genreIds , IFormFile  file)
         {
             //var entity = _context.Movies.Find(model.MovieId);
             var entity = _context.Movies.Include("Genres").FirstOrDefault(m=>m.MovieId==model.MovieId);
@@ -84,9 +88,26 @@ namespace MovieApp3.Web.Controllers
 
             entity.Title = model.Title;
             entity.Description = model.Description;
-            entity.ImageUrl = model.ImageUrl;
+
+            //entity.ImageUrl = model.ImageUrl;
+
+            if (file != null)
+            {
+                var extension = Path.GetExtension(file.FileName); // .jpg, .png alır.Dosya uzantısını aldık.
+                var filename = string.Format($"{Guid.NewGuid()}{extension}"); // $"yalcin{...} dosya isminin başına yalcin da yazabilirsin
+                                                                              //var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img", file.FileName); dosya yerine gidip aynı isimli resim bulursa silip tekrar yükler.Veri kaybı oluşmaması için resim isimlerine unique isim vermemiz gerekir yukarıdaki 2 satırda bunu yaptık.
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img", filename); //Dosyayı kaydedeceği yeri söylüyoruz..Aynı isimli dosya bulursa aynı isimli dosyanın üstüne yazar.Bu nedenle yukarıda dosyabasına newguid verdik.
+                entity.ImageUrl = filename;
+
+                using (var stream = new FileStream(path, FileMode.Create)) //Dosyanın kaydedilmesi.
+                {
+                    await file.CopyToAsync(stream); //Dosyanın kaydedilmesi.Dosyanın kaydeilmesini bekliyoruz. Metot içinde async kullanırsak metotu da asenkron yapmamız gerekiyor (task ekle ).
+                }
+            }
+
+
             //entity.Genres = new List<Genre>();
-              entity.Genres =genreIds.Select(id=> _context.Genres.FirstOrDefault(i=>i.GenreId==id)).ToList(); 
+            entity.Genres =genreIds.Select(id=> _context.Genres.FirstOrDefault(i=>i.GenreId==id)).ToList(); 
             
             _context.SaveChanges();
 
