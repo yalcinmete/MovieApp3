@@ -138,8 +138,21 @@ namespace MovieApp3.Web.Controllers
         [HttpPost]
         public IActionResult GenreUpdate(AdminGenreEditViewModel model, int[] movieIds)
         {
-            if (ModelState.IsValid)
-            {
+
+            //var entity = _context.Genres.FirstOrDefault(i => i.GenreId == model.GenreId);
+
+            //if (entity == null) 
+            //{
+            //    return NotFound();
+            //}
+
+            //entity.Name= model.Name;
+
+            //_context.SaveChanges();
+
+            //return RedirectToAction("GenreList");   
+
+
                 var entity = _context.Genres.Include("Movies").FirstOrDefault(i => i.GenreId == model.GenreId);
                 if (entity == null)
                 {
@@ -154,9 +167,6 @@ namespace MovieApp3.Web.Controllers
 
                 _context.SaveChanges();
                 return RedirectToAction("GenreList");
-            }
-
-            return View(model);
 
         }
     }
