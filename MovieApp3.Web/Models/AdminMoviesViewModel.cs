@@ -29,6 +29,9 @@ namespace MovieApp3.Web.Models
         [Required(ErrorMessage = "film açıklama girmelisiniz")]
         [StringLength(3000, MinimumLength = 10, ErrorMessage = "Film açıklama için 10-3000 karakter girmelisiniz")]
         public string Description { get; set; }//Veritabanında description zorunlu alan değil ama model sayesinde zorunlu hale getirebiliyoruz.
+
+        [Required(ErrorMessage = "En az bir tür seçmelisini")]
+        public int[] GenreIds { get; set; } //Hata mesajını model olarak ekranda gösterebilmek için oluşturduk.
     }
 
     public class AdminEditMovieViewModel

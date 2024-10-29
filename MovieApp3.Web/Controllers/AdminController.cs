@@ -220,13 +220,28 @@ namespace MovieApp3.Web.Controllers
         public IActionResult MovieCreate()
         {
             ViewBag.Genres = _context.Genres.ToList();
-            return View();
+            //return View();
+            return View(new AdminCreateMovieModel() );
         }
 
         [HttpPost]
         //public IActionResult MovieCreate(Movie m , int[] genreIds)
-        public IActionResult MovieCreate(AdminCreateMovieModel model , int[] genreIds)
+        //public IActionResult MovieCreate(AdminCreateMovieModel model , int[] genreIds)
+        public IActionResult MovieCreate(AdminCreateMovieModel model ) //model içinde genreIds bilgisi var.
         {
+
+            if (model.Title !=null && model.Title.Contains("@")) 
+            {
+                ModelState.AddModelError("", "Film başlığı @ işareti içeremez");//Model ile ilişkilendirmek istemeyebilirsin bu sefer hata en üstte (All dediğimiz için) çıkar. 
+                //ModelState.AddModelError("Title", "Film başlığı @ işareti içeremez");//Model ile ilişkilendirmek istyebilirsin bu sefer hata model textboxın altında çıkar.
+            }
+
+            //if (model.GenreIds.Length == 0) artık dizi olarak değil model içinden geliyor. Boş yani seçilmezse null döner.
+            //if (model.GenreIds == null) //artık model içinde kontrol olduğu için modelin içine gidip GenreIds property'e required eklemen yeterli
+            //{
+            //    ModelState.AddModelError("GenreIds", "En az bir tür seçmelisiniz");
+            //}
+
             if (ModelState.IsValid)
             {
                 var entity = new Movie
@@ -238,7 +253,7 @@ namespace MovieApp3.Web.Controllers
 
                 
                 //m.Genres = new List<Genre>(); //Genres bilgisi tanımlı ama null gösteriyordu.Null göstermesin.//movie classının ctor'unda yaptık.
-                foreach (var  id in genreIds)
+                foreach (var  id in model.GenreIds)
                 {
                     entity.Genres.Add(_context.Genres.FirstOrDefault(i => i.GenreId == id));
                 }
@@ -248,7 +263,7 @@ namespace MovieApp3.Web.Controllers
                 return RedirectToAction("MovieList", "Admin");
             }
             ViewBag.Genres = _context.Genres.ToList();
-            return View();  
+            return View(model);  
         }
     }
 }
