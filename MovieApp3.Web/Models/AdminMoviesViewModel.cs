@@ -18,6 +18,19 @@ namespace MovieApp3.Web.Models
         public List<Genre> Genres { get; set; }
     }
 
+    public class AdminCreateMovieModel 
+    {
+        [Display(Name ="Film Adı")]
+        [Required(ErrorMessage ="film adı girmelisiniz")]
+        [StringLength(50,MinimumLength =3,ErrorMessage ="Film adı için 3-50 karakter girmelisiniz")]
+        public string Title { get; set; }
+
+        [Display(Name = "Film Adı")]
+        [Required(ErrorMessage = "film açıklama girmelisiniz")]
+        [StringLength(3000, MinimumLength = 10, ErrorMessage = "Film açıklama için 10-3000 karakter girmelisiniz")]
+        public string Description { get; set; }//Veritabanında description zorunlu alan değil ama model sayesinde zorunlu hale getirebiliyoruz.
+    }
+
     public class AdminEditMovieViewModel
     {
         public int MovieId { get; set; }

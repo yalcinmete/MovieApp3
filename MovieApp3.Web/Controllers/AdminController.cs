@@ -224,16 +224,25 @@ namespace MovieApp3.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult MovieCreate(Movie m , int[] genreIds)
+        //public IActionResult MovieCreate(Movie m , int[] genreIds)
+        public IActionResult MovieCreate(AdminCreateMovieModel model , int[] genreIds)
         {
             if (ModelState.IsValid)
             {
-                m.Genres = new List<Genre>(); //Genres bilgisi tanımlı ama null gösteriyordu.Null göstermesin.
+                var entity = new Movie
+                {
+                    Title = model.Title,
+                    Description = model.Description,
+                    ImageUrl = "no-image.png"
+                };
+
+                
+                //m.Genres = new List<Genre>(); //Genres bilgisi tanımlı ama null gösteriyordu.Null göstermesin.//movie classının ctor'unda yaptık.
                 foreach (var  id in genreIds)
                 {
-                    m.Genres.Add(_context.Genres.FirstOrDefault(i => i.GenreId == id));
+                    entity.Genres.Add(_context.Genres.FirstOrDefault(i => i.GenreId == id));
                 }
-                _context.Movies.Add(m);
+                _context.Movies.Add(entity);
                 _context.SaveChanges();
 
                 return RedirectToAction("MovieList", "Admin");
