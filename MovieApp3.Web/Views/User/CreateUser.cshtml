@@ -2,28 +2,35 @@
 
 <h1>Create User</h1>
 
-<form asp-controller="User" asp-action="CreateUser" method="post" >
+<form asp-controller="User" asp-action="CreateUser" method="post" novalidate >
+     @*HTML Normalde form elemanlarından email, şifre gibi kullanımlarda otomatik olarak girilen veriyi kontrol eder. novalidate attribute'u eklersek bunu yapma diyoruz backend kontrolune gitsin*@
     <div class="row">
+        <div asp-validation-summary="All"></div>
         <div class="col-md-8">
             <div class="mb-3">
                 <label asp-for="UserName"></label>
                 <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="Name"></label>
                 <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="Email"></label>
                 <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="Password"></label>
                 <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="RePassword"></label>
                 <input asp-for="RePassword" class="form-control" />
+                <span asp-validation-for="RePassword" class="text-danger"></span>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </div>
@@ -31,10 +38,12 @@
             <div class="mb-3">
                 <label asp-for="Url"></label>
                 <input asp-for="Url" class="form-control" />
+                <span asp-validation-for="Url" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="BirthDate"></label>
-                <input asp-for="BirthDate" class="form-control" />
+                <label asp-for="BirthYear"></label>
+                <input asp-for="BirthYear" class="form-control" />
+                <span asp-validation-for="BirthYear" class="text-danger"></span>
             </div>
         </div>
     </div>
