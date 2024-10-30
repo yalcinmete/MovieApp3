@@ -1,4 +1,6 @@
 ﻿using MovieApp3.Web.Entity;
+using MovieApp3.Web.Validators;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -32,6 +34,12 @@ namespace MovieApp3.Web.Models
 
         [Required(ErrorMessage = "En az bir tür seçmelisiniz")]
         public int[] GenreIds { get; set; } //Hata mesajını model olarak ekranda gösterebilmek için oluşturduk.
+
+        public bool IsClassic { get; set; }
+
+        [ClassicMovie(1950)]
+        [DataType(DataType.Date)] //Html 5 kontrolu yapar.
+        public DateTime ReleaseDate { get; set; } = DateTime.Now;
     }
 
     public class AdminEditMovieViewModel
