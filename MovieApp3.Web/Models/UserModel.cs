@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System;
+using MovieApp3.Web.Validators;
 
 namespace MovieApp3.Web.Models
 {
@@ -17,6 +18,7 @@ namespace MovieApp3.Web.Models
 
         [Required]
         [EmailAddress]
+        [EmailProviders] //CustomValidationAttributes
         public string Email { get; set; }
 
         [Required]
@@ -31,7 +33,11 @@ namespace MovieApp3.Web.Models
         [Url]
         public string Url { get; set; }
 
-        [Range(1900, 2010)]
-        public int BirthYear { get; set; }
+        //[Range(1900, 2010)]
+        //public int BirthYear { get; set; }
+        [BirthDate(ErrorMessage ="Doğum tarihiniz şimdiki ya da sonraki tarih olamaz")]
+        [DataType(DataType.Date)]
+        [Display(Name="Birth Date")]
+        public DateTime BirthDate { get; set; }
     }
 }
