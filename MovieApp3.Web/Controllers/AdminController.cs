@@ -199,37 +199,43 @@ namespace MovieApp3.Web.Controllers
 
 
         [HttpPost]
-        public IActionResult GenreUpdate(AdminGenreEditViewModel model, int[] movieIds)
+        public IActionResult GenreUpdate(AdminGenreEditViewModel model, int[] movieIds) //Movie bilgisini veritabanından almadık sayfa üzerinden aldık.(hidden Movies[@i].MovieId ile..
         {
 
-            //var entity = _context.Genres.FirstOrDefault(i => i.GenreId == model.GenreId);
-
-            //if (entity == null) 
-            //{
-            //    return NotFound();
-            //}
-
-            //entity.Name= model.Name;
-
-            //_context.SaveChanges();
-
-            //return RedirectToAction("GenreList");   
-
-
-            var entity = _context.Genres.Include("Movies").FirstOrDefault(i => i.GenreId == model.GenreId);
-            if (entity == null)
+            if (ModelState.IsValid)
             {
-                return NotFound();
-            }
-            entity.Name = model.Name;
+                //var entity = _context.Genres.FirstOrDefault(i => i.GenreId == model.GenreId);
 
-            foreach (var id in movieIds)
-            {
-                entity.Movies.Remove(entity.Movies.FirstOrDefault(m => m.MovieId == id));
+                //if (entity == null) 
+                //{
+                //    return NotFound();
+                //}
+
+                //entity.Name= model.Name;
+
+                //_context.SaveChanges();
+
+                //return RedirectToAction("GenreList");   
+
+
+                var entity = _context.Genres.Include("Movies").FirstOrDefault(i => i.GenreId == model.GenreId);
+                if (entity == null)
+                {
+                    return NotFound();
+                }
+                entity.Name = model.Name;
+
+                foreach (var id in movieIds)
+                {
+                    entity.Movies.Remove(entity.Movies.FirstOrDefault(m => m.MovieId == id));
+                }
+
+                _context.SaveChanges();
+                return RedirectToAction("GenreList");
             }
 
-            _context.SaveChanges();
-            return RedirectToAction("GenreList");
+            return View(model);
+            
 
         }
 

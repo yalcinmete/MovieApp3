@@ -20,6 +20,8 @@ namespace MovieApp3.Web.Models
     public class AdminGenreEditViewModel
     {
         public int GenreId { get; set; }
+
+        [Required(ErrorMessage = "tür bilgisi girmelisiniz")]
         public string Name { get; set; }
         public List<AdminMovieViewModel> Movies { get; set; }
     }
