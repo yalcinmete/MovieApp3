@@ -38,8 +38,8 @@ namespace MovieApp3.Web.Controllers
             return View(new AdminMoviesViewModel
             {
                 Movies = _context.Movies
-                    .Include(m=>m.Genres)
-                    .Select(m=>new AdminMovieViewModel
+                    .Include(m => m.Genres)
+                    .Select(m => new AdminMovieViewModel
                     {
                         MovieId = m.MovieId,
                         Title = m.Title,
@@ -63,7 +63,8 @@ namespace MovieApp3.Web.Controllers
                 Title = m.Title,
                 Description = m.Description,
                 ImageUrl = m.ImageUrl,
-                SelectedGenres = m.Genres
+                //SelectedGenres = m.Genres
+                GenreIds = m.Genres.Select(i=>i.GenreId).ToArray()
             }).FirstOrDefault(m => m.MovieId == id);
 
             ViewBag.Genres = _context.Genres.ToList();
@@ -76,49 +77,56 @@ namespace MovieApp3.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> MovieUpdate(AdminEditMovieViewModel model , int[] genreIds , IFormFile  file)
+        public async Task<IActionResult> MovieUpdate(AdminEditMovieViewModel model, int[] genreIds, IFormFile file)
         {
             //var entity = _context.Movies.Find(model.MovieId);
-            var entity = _context.Movies.Include("Genres").FirstOrDefault(m=>m.MovieId==model.MovieId);
 
-            if (entity == null) 
+            if (ModelState.IsValid)
             {
-                return NotFound();  
-            }
 
-            entity.Title = model.Title;
-            entity.Description = model.Description;
+                var entity = _context.Movies.Include("Genres").FirstOrDefault(m => m.MovieId == model.MovieId);
 
-            //entity.ImageUrl = model.ImageUrl;
-
-            if (file != null)
-            {
-                var extension = Path.GetExtension(file.FileName); // .jpg, .png alır.Dosya uzantısını aldık.
-                var filename = string.Format($"{Guid.NewGuid()}{extension}"); // $"yalcin{...} dosya isminin başına yalcin da yazabilirsin
-                                                                              //var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img", file.FileName); dosya yerine gidip aynı isimli resim bulursa silip tekrar yükler.Veri kaybı oluşmaması için resim isimlerine unique isim vermemiz gerekir yukarıdaki 2 satırda bunu yaptık.
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img", filename); //Dosyayı kaydedeceği yeri söylüyoruz..Aynı isimli dosya bulursa aynı isimli dosyanın üstüne yazar.Bu nedenle yukarıda dosyabasına newguid verdik.
-                entity.ImageUrl = filename;
-
-                using (var stream = new FileStream(path, FileMode.Create)) //Dosyanın kaydedilmesi.
+                if (entity == null)
                 {
-                    await file.CopyToAsync(stream); //Dosyanın kaydedilmesi.Dosyanın kaydeilmesini bekliyoruz. Metot içinde async kullanırsak metotu da asenkron yapmamız gerekiyor (task ekle ).
+                    return NotFound();
                 }
+
+                entity.Title = model.Title;
+                entity.Description = model.Description;
+
+                //entity.ImageUrl = model.ImageUrl;
+
+                if (file != null)
+                {
+                    var extension = Path.GetExtension(file.FileName); // .jpg, .png alır.Dosya uzantısını aldık.
+                    var filename = string.Format($"{Guid.NewGuid()}{extension}"); // $"yalcin{...} dosya isminin başına yalcin da yazabilirsin
+                                                                                  //var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img", file.FileName); dosya yerine gidip aynı isimli resim bulursa silip tekrar yükler.Veri kaybı oluşmaması için resim isimlerine unique isim vermemiz gerekir yukarıdaki 2 satırda bunu yaptık.
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\img", filename); //Dosyayı kaydedeceği yeri söylüyoruz..Aynı isimli dosya bulursa aynı isimli dosyanın üstüne yazar.Bu nedenle yukarıda dosyabasına newguid verdik.
+                    entity.ImageUrl = filename;
+
+                    using (var stream = new FileStream(path, FileMode.Create)) //Dosyanın kaydedilmesi.
+                    {
+                        await file.CopyToAsync(stream); //Dosyanın kaydedilmesi.Dosyanın kaydeilmesini bekliyoruz. Metot içinde async kullanırsak metotu da asenkron yapmamız gerekiyor (task ekle ).
+                    }
+                }
+
+
+                //entity.Genres = new List<Genre>();
+                entity.Genres = genreIds.Select(id => _context.Genres.FirstOrDefault(i => i.GenreId == id)).ToList();
+
+                _context.SaveChanges();
+
+                return RedirectToAction("MovieList");
             }
-
-
-            //entity.Genres = new List<Genre>();
-            entity.Genres =genreIds.Select(id=> _context.Genres.FirstOrDefault(i=>i.GenreId==id)).ToList(); 
-            
-            _context.SaveChanges();
-
-            return RedirectToAction("MovieList");
+            ViewBag.Genres = _context.Genres.ToList();
+            return View(model);
         }
 
         public IActionResult GenreList()
         {
             return View(new AdminGenresViewModel
             {
-                Genres = _context.Genres.Select(g=>new AdminGenreViewModel
+                Genres = _context.Genres.Select(g => new AdminGenreViewModel
                 {
                     GenreId = g.GenreId,
                     Name = g.Name,
@@ -174,20 +182,20 @@ namespace MovieApp3.Web.Controllers
             //return RedirectToAction("GenreList");   
 
 
-                var entity = _context.Genres.Include("Movies").FirstOrDefault(i => i.GenreId == model.GenreId);
-                if (entity == null)
-                {
-                    return NotFound();
-                }
-                entity.Name = model.Name;
+            var entity = _context.Genres.Include("Movies").FirstOrDefault(i => i.GenreId == model.GenreId);
+            if (entity == null)
+            {
+                return NotFound();
+            }
+            entity.Name = model.Name;
 
-                foreach (var id in movieIds)
-                {
-                    entity.Movies.Remove(entity.Movies.FirstOrDefault(m => m.MovieId == id));
-                }
+            foreach (var id in movieIds)
+            {
+                entity.Movies.Remove(entity.Movies.FirstOrDefault(m => m.MovieId == id));
+            }
 
-                _context.SaveChanges();
-                return RedirectToAction("GenreList");
+            _context.SaveChanges();
+            return RedirectToAction("GenreList");
 
         }
 
@@ -221,16 +229,16 @@ namespace MovieApp3.Web.Controllers
         {
             ViewBag.Genres = _context.Genres.ToList();
             //return View();
-            return View(new AdminCreateMovieModel() );
+            return View(new AdminCreateMovieModel());
         }
 
         [HttpPost]
         //public IActionResult MovieCreate(Movie m , int[] genreIds)
         //public IActionResult MovieCreate(AdminCreateMovieModel model , int[] genreIds)
-        public IActionResult MovieCreate(AdminCreateMovieModel model ) //model içinde genreIds bilgisi var.
+        public IActionResult MovieCreate(AdminCreateMovieModel model) //model içinde genreIds bilgisi var.
         {
 
-            if (model.Title !=null && model.Title.Contains("@")) 
+            if (model.Title != null && model.Title.Contains("@"))
             {
                 ModelState.AddModelError("", "Film başlığı @ işareti içeremez");//Model ile ilişkilendirmek istemeyebilirsin bu sefer hata en üstte (All dediğimiz için) çıkar. 
                 //ModelState.AddModelError("Title", "Film başlığı @ işareti içeremez");//Model ile ilişkilendirmek istyebilirsin bu sefer hata model textboxın altında çıkar.
@@ -251,9 +259,9 @@ namespace MovieApp3.Web.Controllers
                     ImageUrl = "no-image.png"
                 };
 
-                
+
                 //m.Genres = new List<Genre>(); //Genres bilgisi tanımlı ama null gösteriyordu.Null göstermesin.//movie classının ctor'unda yaptık.
-                foreach (var  id in model.GenreIds)
+                foreach (var id in model.GenreIds)
                 {
                     entity.Genres.Add(_context.Genres.FirstOrDefault(i => i.GenreId == id));
                 }
@@ -263,7 +271,7 @@ namespace MovieApp3.Web.Controllers
                 return RedirectToAction("MovieList", "Admin");
             }
             ViewBag.Genres = _context.Genres.ToList();
-            return View(model);  
+            return View(model);
         }
     }
 }
