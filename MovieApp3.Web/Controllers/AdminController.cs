@@ -124,15 +124,49 @@ namespace MovieApp3.Web.Controllers
 
         public IActionResult GenreList()
         {
-            return View(new AdminGenresViewModel
+            return View(GetGenres());
+        }
+
+        private AdminGenresViewModel GetGenres()
+        {
+            return new AdminGenresViewModel
             {
                 Genres = _context.Genres.Select(g => new AdminGenreViewModel
                 {
                     GenreId = g.GenreId,
                     Name = g.Name,
-                    Count = g.Movies.Count,
-                }).ToList(),
-            });
+                    Count = g.Movies.Count
+                }).ToList()
+            };
+        } //iki yerde kullandığımız için içeriğini metot yaptık.
+
+
+        [HttpPost]
+        public IActionResult GenreCreate(AdminGenresViewModel model)
+        {
+            if (model.Name != null && model.Name.Length < 3)
+            {
+                ModelState.AddModelError("Name", "tür adı minimum 3 karakter olmalıdır");
+            } //Model kontrolü yapıp IsValid özelliğini bu şekilde false duruma da çekebiliriz. Daha önce de kullandık.
+
+            if (ModelState.IsValid)
+            {
+                _context.Genres.Add(new Genre { Name = model.Name });
+                _context.SaveChanges();
+                return RedirectToAction("GenreList");
+            }
+
+            return View("GenreList", GetGenres());
+
+            //return View("GenreList", new AdminGenresViewModel
+            //{
+            //    Genres = _context.Genres.Select(g => new AdminGenreViewModel
+            //    {
+            //        GenreId = g.GenreId,
+            //        Name = g.Name,
+            //        Count = g.Movies.Count
+            //    }).ToList()
+            //});        //RedirectToAction demiyoruz burada. RedirectToAction dersek yeni bir HttpDöngüsü başlatmış oluruz(Yeni action başlar içinde model dolar) Bu durumda model içerisindeki hata mesajları kaybolur.Model içindeki hataların kaybolmaması için return View() demeliyiz. 
         }
 
         public IActionResult GenreUpdate(int? id)

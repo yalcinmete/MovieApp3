@@ -5,6 +5,7 @@ namespace MovieApp3.Web.Models
 {
     public class AdminGenresViewModel
     {
+        [Required(ErrorMessage ="tür bilgisi girmelisini")]
         public string Name { get; set; }
         public List<AdminGenreViewModel> Genres { get; set; }
     }
